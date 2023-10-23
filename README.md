@@ -22,8 +22,13 @@ Coffee machine CLI application.
 - Added coffee machine actions which do the following:
   - coffee menu
     - espresso, latte, cappuccino
-  - refill all ingredients
+  - refill coffee machine ingredients
   - take all money out of the coffee machine
+
+- Introduced two new machine actions `remaining` and `exit`
+- Validate if coffee can be made or not based on available coffee machine resources. Add appropriate message to inform user of what resources are missing.
+- During the coffee action menu, if user wants to go back he can input `back`
+- User can have the machine do multiple actions until he wants to exit the program.
 
 ## Project status
 

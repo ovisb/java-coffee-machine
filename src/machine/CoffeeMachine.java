@@ -16,7 +16,7 @@ public class CoffeeMachine {
     public static int availableMachineMoney = 550;
 
     public static int getIntInput(String message) {
-        int value = -1;
+        int value;
         while (true) {
             System.out.println(message);
             try {
@@ -35,7 +35,7 @@ public class CoffeeMachine {
         }
     }
 
-    public static void printCoffeDetails(int cups) {
+    public static void printCoffeeDetails(int cups) {
         System.out.printf("For %d cups of coffee you will need: %n", cups);
         System.out.printf("""
                 %d ml of water
@@ -80,17 +80,26 @@ public class CoffeeMachine {
 
     public static void actionMenu() {
         loop: while (true) {
-            System.out.println("Write action (buy, fill, take): ");
+            System.out.println("Write action (buy, fill, take, remaining, exit): ");
             String option = scanner.next();
             switch (option) {
                 case "buy":
+                    System.out.println();
                     coffeeMenu();
-                    break loop;
+                    break;
                 case "fill":
+                    System.out.println();
                     fillMachine();
-                    break loop;
+                    break;
                 case "take":
+                    System.out.println();
                     takeMoney();
+                    break;
+                case "remaining":
+                    System.out.println();
+                    printMachineStatus();
+                    break;
+                case "exit":
                     break loop;
                 default:
                     System.out.println("Machine option not available. Please choose from available ones.");
@@ -100,20 +109,20 @@ public class CoffeeMachine {
 
     public static void coffeeMenu() {
         loop: while (true) {
-            System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino:");
+            System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu: ");
             String option = scanner.next();
             switch (option) {
                 case "1":
-                    System.out.println("Prepping espresso..");
                     makeCoffee(250, 0, 16, 4);
                     break loop;
                 case "2":
                     makeCoffee(350, 75, 20, 7);
-                    System.out.println("Prepping latte..");
                     break loop;
                 case "3":
-                    System.out.println("Prepping cappuccino..");
                     makeCoffee(200, 100, 12, 6);
+                    break loop;
+                case "back":
+                    System.out.println("Going back to main menu");
                     break loop;
                 default:
                     System.out.println("Menu option not available. Please choose from available ones.");
@@ -121,13 +130,30 @@ public class CoffeeMachine {
         }
     }
 
+    public static boolean checkResources(int amountOfWater, int amountOfMilk, int amountOfBeans) {
+        boolean canMake = false;
+        if (amountOfWater > availableMachineWater) {
+            System.out.println("Sorry, not enough water!");
+        } else if (amountOfMilk > availableMachineMilk) {
+            System.out.println("Sorry, not enough milk");
+        } else if (amountOfBeans > availableMachineBeans) {
+            System.out.println("Sorry, not enough beans");
+        } else {
+            canMake = true;
+        }
+        return canMake;
+    }
+
     public static void makeCoffee(int amountOfWater, int amountOfMilk, int amountOfBeans, int price) {
-        availableMachineWater -= amountOfWater;
-        availableMachineMilk -= amountOfMilk;
-        availableMachineBeans -= amountOfBeans;
-        availableMachineCups -= 1;
-        availableMachineMoney += price;
-        System.out.println();
+        if (checkResources(amountOfWater, amountOfMilk, amountOfBeans)) {
+            System.out.println("I have enough resources, making you a coffee!");
+            availableMachineWater -= amountOfWater;
+            availableMachineMilk -= amountOfMilk;
+            availableMachineBeans -= amountOfBeans;
+            availableMachineCups -= 1;
+            availableMachineMoney += price;
+            System.out.println();
+        }
     }
 
     public static void fillMachine() {
@@ -142,29 +168,9 @@ public class CoffeeMachine {
         System.out.printf("I gave you $%d%n", availableMachineMoney);
         System.out.println();
         availableMachineMoney -= availableMachineMoney;
-        System.out.println();
     }
 
     public static void main(String[] args) {
-
-//        int availableWater = getInput("Write how many ml of water the coffee machine has: ");
-//        int availableMilk = getInput("Write how many ml of milk the coffee machine has: ");
-//        int availableBeans = getInput("Write how many grams of coffee beans the coffee machine has: ");
-//        int cups = getInput("Write how many cups of coffee you will need: ");
-//        int amountOfCups = calculateAmountOfCups(availableWater, availableMilk, availableBeans);
-//
-//        if (
-//                ((availableWater < WATER_PER_COFFEE || availableMilk < MILK_PER_COFFEE || availableBeans < BEANS_PER_COFFEE) && cups == 0)
-//                || (amountOfCups == cups)
-//        ) {
-//            System.out.println("Yes, I can make that amount of coffee");
-//        } else if (amountOfCups < cups) {
-//            System.out.printf("No, I can make only %d cup(s) of coffee%n", amountOfCups);
-//        } else {
-//            System.out.printf("Yes, I can make that amount of coffee (and even %d more than that)", amountOfCups - cups);
-//        }
-        printMachineStatus();
         actionMenu();
-        printMachineStatus();
     }
 }
