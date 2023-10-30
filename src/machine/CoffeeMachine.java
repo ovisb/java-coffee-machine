@@ -5,16 +5,21 @@ import java.util.Scanner;
 
 public class CoffeeMachine {
     public static final Scanner scanner = new Scanner(System.in);
-    public static final int WATER_PER_COFFEE = 550;
-    public static final int MILK_PER_COFFEE = 50;
-    public static final int BEANS_PER_COFFEE = 15;
-    public static int availableMachineWater = 400;
-    public static int availableMachineMilk = 540;
-    public static int availableMachineBeans = 120;
-    public static int availableMachineCups = 9;
-    public static int availableMachineMoney = 550;
+    private int availableMachineWater;
+    private int availableMachineMilk;
+    private int availableMachineBeans;
+    private int availableMachineCups;
+    private int availableMachineMoney;
 
-    public static int getIntInput(String message) {
+    private CoffeeMachine() {
+        availableMachineWater = 400;
+        availableMachineMilk = 540;
+        availableMachineBeans = 120;
+        availableMachineCups = 9;
+        availableMachineMoney = 550;
+    }
+
+    private int getIntInput(String message) {
         int value;
         while (true) {
             System.out.println(message);
@@ -34,20 +39,7 @@ public class CoffeeMachine {
         }
     }
 
-    public static void printCoffeeDetails(int cups) {
-        System.out.printf("For %d cups of coffee you will need: %n", cups);
-        System.out.printf("""
-                %d ml of water
-                %d ml of milk
-                %d g of coffee beans
-                """,
-                WATER_PER_COFFEE * cups,
-                MILK_PER_COFFEE * cups,
-                BEANS_PER_COFFEE * cups
-        );
-    }
-
-    public static void printMachineStatus() {
+    private void printMachineStatus() {
         System.out.printf("""
                 The coffee machine has:
                 %d ml of water
@@ -65,19 +57,7 @@ public class CoffeeMachine {
         System.out.println();
     }
 
-    public static int calculateAmountOfCups(int machineWater, int machineMilk, int machineBeans) {
-        int amount = 0;
-
-        while (machineWater >= WATER_PER_COFFEE && machineMilk >= MILK_PER_COFFEE && machineBeans >= BEANS_PER_COFFEE) {
-            machineWater -= WATER_PER_COFFEE;
-            machineMilk -= MILK_PER_COFFEE;
-            machineBeans -= BEANS_PER_COFFEE;
-            amount += 1;
-        }
-        return amount;
-    }
-
-    public static void actionMenu() {
+    public void actionMenu() {
         loop: while (true) {
             System.out.println("Write action (buy, fill, take, remaining, exit): ");
             String option = scanner.next();
@@ -106,7 +86,7 @@ public class CoffeeMachine {
         }
     }
 
-    public static void coffeeMenu() {
+    private void coffeeMenu() {
         loop: while (true) {
             System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu: ");
             String option = scanner.next();
@@ -129,7 +109,7 @@ public class CoffeeMachine {
         }
     }
 
-    public static boolean checkResources(int amountOfWater, int amountOfMilk, int amountOfBeans) {
+    private boolean checkResources(int amountOfWater, int amountOfMilk, int amountOfBeans) {
         boolean canMake = false;
         if (amountOfWater > availableMachineWater) {
             System.out.println("Sorry, not enough water!");
@@ -143,7 +123,7 @@ public class CoffeeMachine {
         return canMake;
     }
 
-    public static void makeCoffee(int amountOfWater, int amountOfMilk, int amountOfBeans, int price) {
+    private void makeCoffee(int amountOfWater, int amountOfMilk, int amountOfBeans, int price) {
         if (checkResources(amountOfWater, amountOfMilk, amountOfBeans)) {
             System.out.println("I have enough resources, making you a coffee!");
             availableMachineWater -= amountOfWater;
@@ -155,7 +135,7 @@ public class CoffeeMachine {
         }
     }
 
-    public static void fillMachine() {
+    private void fillMachine() {
         availableMachineWater += getIntInput("Write how many ml of water you want to add: ");
         availableMachineMilk += getIntInput("Write how many ml of milk you want to add: ");
         availableMachineBeans += getIntInput("Write how many grams of coffee beans you want to add: ");
@@ -163,13 +143,14 @@ public class CoffeeMachine {
         System.out.println();
     }
 
-    public static void takeMoney() {
+    private void takeMoney() {
         System.out.printf("I gave you $%d%n", availableMachineMoney);
         System.out.println();
-        availableMachineMoney -= availableMachineMoney;
+        availableMachineMoney = 0;
     }
 
     public static void main(String[] args) {
-        actionMenu();
+        CoffeeMachine coffeeMachine = new CoffeeMachine();
+        coffeeMachine.actionMenu();
     }
 }
