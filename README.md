@@ -32,4 +32,4 @@ Coffee machine CLI application.
 
 ## Project status
 
-Completed 4/6 stages
+Completed 6/6 stages

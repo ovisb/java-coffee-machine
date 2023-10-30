@@ -8,7 +8,6 @@ public class CoffeeMachine {
     public static final int WATER_PER_COFFEE = 550;
     public static final int MILK_PER_COFFEE = 50;
     public static final int BEANS_PER_COFFEE = 15;
-
     public static int availableMachineWater = 400;
     public static int availableMachineMilk = 540;
     public static int availableMachineBeans = 120;
