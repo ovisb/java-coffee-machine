@@ -30,6 +30,9 @@ Coffee machine CLI application.
 - During the coffee action menu, if user wants to go back he can input `back`
 - User can have the machine do multiple actions until he wants to exit the program.
 
+31.10.2023
+- refactored code to be more OOP oriented
+- made us of Enums for the main menu choice and for the coffee type menu
 ## Project status
 
 Completed 6/6 stages

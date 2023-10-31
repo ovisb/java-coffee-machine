@@ -57,28 +57,41 @@ public class CoffeeMachine {
         System.out.println();
     }
 
+    private MachineAction validateMachineInput() {
+        String userInput;
+        while (true) {
+            try {
+                userInput = scanner.next();
+                return MachineAction.valueOf(userInput.toUpperCase());
+
+            } catch (IllegalArgumentException il) {
+                System.out.println("Machine option not available. Please choose from available ones.");
+            }
+        }
+    }
+
     public void actionMenu() {
         loop: while (true) {
             System.out.println("Write action (buy, fill, take, remaining, exit): ");
-            String option = scanner.next();
-            switch (option) {
-                case "buy":
+            MachineAction machineAction = validateMachineInput();
+            switch (machineAction) {
+                case BUY:
                     System.out.println();
                     coffeeMenu();
                     break;
-                case "fill":
+                case FILL:
                     System.out.println();
                     fillMachine();
                     break;
-                case "take":
+                case TAKE:
                     System.out.println();
                     takeMoney();
                     break;
-                case "remaining":
+                case REMAINING:
                     System.out.println();
                     printMachineStatus();
                     break;
-                case "exit":
+                case EXIT:
                     break loop;
                 default:
                     System.out.println("Machine option not available. Please choose from available ones.");
@@ -92,13 +105,13 @@ public class CoffeeMachine {
             String option = scanner.next();
             switch (option) {
                 case "1":
-                    makeCoffee(250, 0, 16, 4);
+                    makeCoffee(CoffeeType.ESPRESSO);
                     break loop;
                 case "2":
-                    makeCoffee(350, 75, 20, 7);
+                    makeCoffee(CoffeeType.LATTE);
                     break loop;
                 case "3":
-                    makeCoffee(200, 100, 12, 6);
+                    makeCoffee(CoffeeType.CAPPUCCINO);
                     break loop;
                 case "back":
                     System.out.println("Going back to main menu");
@@ -123,14 +136,14 @@ public class CoffeeMachine {
         return canMake;
     }
 
-    private void makeCoffee(int amountOfWater, int amountOfMilk, int amountOfBeans, int price) {
-        if (checkResources(amountOfWater, amountOfMilk, amountOfBeans)) {
+    private void makeCoffee(CoffeeType coffeetype) {
+        if (checkResources(coffeetype.getAmountOfWatter(), coffeetype.getAmountOfMilk(), coffeetype.getAmountOfBeans())) {
             System.out.println("I have enough resources, making you a coffee!");
-            availableMachineWater -= amountOfWater;
-            availableMachineMilk -= amountOfMilk;
-            availableMachineBeans -= amountOfBeans;
+            availableMachineWater -= coffeetype.getAmountOfWatter();
+            availableMachineMilk -= coffeetype.getAmountOfMilk();
+            availableMachineBeans -= coffeetype.getAmountOfBeans();
             availableMachineCups -= 1;
-            availableMachineMoney += price;
+            availableMachineMoney += coffeetype.getPrice();
             System.out.println();
         }
     }
